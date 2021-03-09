@@ -41,6 +41,8 @@ const positionFinder = {
 
     minimumDistPoint: function( room ){
 
+        let measures = this.getMeasures( room );
+
         let height = measures.height;
         let width  = measures.width;
         console.log("H:", height, "w: width", width);
@@ -68,7 +70,7 @@ const positionFinder = {
         
          for( let z = 0; z < room.length ; z++ ){
         
-             dist = maths.distanceTo( lPos, room[z] );
+             dist = this.maths.distanceTo( lPos, room[z] );
              totalDist += dist;
         
          }
