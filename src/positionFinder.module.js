@@ -45,7 +45,6 @@ const positionFinder = {
 
         let height = measures.height;
         let width  = measures.width;
-        console.log("H:", height, "w: width", width);
         
         let gridX = 10;
         let gridY = 10;

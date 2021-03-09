@@ -14,3 +14,11 @@ let myp5   = new p5( v.sketch, window.document.getElementById('sketch') );
 
 myp5.points = room;
 myp5.center = center;
+
+myp5.mouseReleased = function(){
+    myp5.center = positionFinder.minimumDistPoint( room );
+    myp5.draw_allowed = false;
+    myp5.points.forEach( ( edge , index ) =>{
+        myp5[ "draw_" + index ] = false; 
+    });
+};
