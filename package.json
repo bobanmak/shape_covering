@@ -1,0 +1,31 @@
+{
+  "name": "shape_covering",
+  "version": "1.0.0",
+  "description": "Cover any shape with rectangles p5.js",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bobanmak/shape_covering.git"
+  },
+  "keywords": [
+    "shape",
+    "cover",
+    "find",
+    "center"
+  ],
+  "author": "Boban Jordanoski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bobanmak/shape_covering/issues"
+  },
+  "homepage": "https://github.com/bobanmak/shape_covering#readme",
+  "dependencies": {
+    "p5": "^1.2.0"
+  }
+}
