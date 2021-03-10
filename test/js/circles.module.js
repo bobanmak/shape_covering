@@ -18,18 +18,13 @@ myp5.center = positionFinder.minimumDistPointEdges( room );
 myp5.circles = positionFinder.fillCircles( room );
 
 console.log("circles ", myp5.circles);
-//myp5.rects  = positionFinder.findLightPositions3( room ) ;
-//console.log("mm: ", myp5.rects, myp5.points);
-
-//myp5.center = positionFinder.getCenters( myp5.points, myp5.rects );
 
 
 myp5.mouseReleased = function(){
     myp5.draw_allowed = false;
 
     myp5.center = positionFinder.minimumDistPointEdges( room );
-    //myp5.rects  = positionFinder.findLightPositions3( room ) ;
-    //myp5.center = positionFinder.getCenters( myp5.points, myp5.rects );
+    myp5.circles = positionFinder.fillCircles( room );
 
     myp5.points.forEach( ( edge , index ) =>{
         myp5[ "draw_" + index ] = false; 

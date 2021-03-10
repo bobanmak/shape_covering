@@ -348,6 +348,88 @@ const positionFinder = {
         }
        // console.log("best Pos: ", bestPosition);
         return bestPosition;
+    },
+
+    fillCircles: function( room ){
+
+        let measures = this.getMeasures( room );
+
+        let height = measures.height;
+        let width  = measures.width;
+        
+        let gridX = 10;
+        let gridY = 10;
+        
+        let stepX = width/gridX;
+        let stepY = height/gridY;
+        let lPos  = { x: 0, y: 0 };
+        
+        let smallestSide = 10000;
+        let dist2;
+        let circles = [];
+        let inside = true;
+        
+        for ( let i = 0; i < stepX; i++ ){
+        
+        lPos.x = 0 + i*gridX;
+        
+            for( let j = 0; j < stepY; j++ ){
+                smallestSide = 10000;
+                lPos.y = 0 + j*gridY;
+                
+                for( let z = 0; z < room.length ; z++ ){
+                    
+                    if ( z === room.length - 1 ){
+                        dist2 = this.maths.closestToSegment( { x:lPos.x, y:lPos.y }, room[z], room[0] );
+                    } else {
+                        dist2 = this.maths.closestToSegment( { x:lPos.x, y:lPos.y }, room[z], room[z+1] );
+                    }
+
+                    if ( dist2 < smallestSide ){
+                        smallestSide = dist2;
+                    }
+                
+                }
+
+                inside = this.maths.inside( lPos, room ); 
+
+                
+                if ( smallestSide > 5 && inside ){
+                    circles.push( { position: { x:lPos.x, y:lPos.y }, radius: smallestSide})
+
+                }
+                
+            
+            }
+        }
+
+        return this.find2circles( circles,measures );
+    },
+
+    find2circles: function( circles, measures ){
+
+        let roomDiagonale = Math.sqrt( measures.width*measures.width + measures.height*measures.height );
+        circles.sort((a, b) => parseFloat(b.radius) - parseFloat(a.radius));
+        let dist = 0;
+        let list = [];
+        let biggest = circles[ 0 ];
+        list.push( biggest );
+
+        if ( roomDiagonale/1.5 > biggest.radius*2 ){
+            for( let i = 1; i< circles.length; i++ ){
+                dist = this.maths.distanceTo( biggest.position, circles[i].position );
+    
+                if ( dist >= biggest.radius + circles[i].radius ){
+                    list.push( circles[i] );
+                    break;
+                }
+            }
+        }
+
+        
+        console.log("circles: ", list, roomDiagonale, biggest.radius);
+
+        return list;
     }
 
 }

@@ -19,7 +19,7 @@
       s.center = [];
       s.setup = () => {
         
-        s.createCanvas(800, 800);
+        s.createCanvas(1000, 800);
         s.background(220);
         s.draw_allowed = true;
 
@@ -42,6 +42,7 @@
           s.visualiseTestLines( s.points );
 
           if ( s.rects ) s.visualiseRectangles( s.rects, s.points );
+          if ( s.circles ) s.visualiseCircles( s.circles );
 
       }
 
@@ -99,6 +100,17 @@
         });
 
         s.visualiseLines( visuelList, { color:'red', strokeWeight:2 })
+
+      }
+
+      s.visualiseCircles = ( list ) => {
+        s.stroke('grey'); // Change the color
+        s.strokeWeight(2); // Make the points 10 pixels in size
+        list.forEach( ( c ) =>{
+          s.circle( c.position.x, c.position.y, c.radius*2 );
+  
+        });
+
 
       }
 
