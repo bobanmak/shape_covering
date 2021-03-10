@@ -25,7 +25,16 @@
     "url": "https://github.com/bobanmak/shape_covering/issues"
   },
   "homepage": "https://github.com/bobanmak/shape_covering#readme",
-  "dependencies": {
-    "p5": "^1.2.0"
+  "devDependencies": {
+    "@rollup/plugin-replace": "latest",
+    "async": "latest",
+    "gulp": "latest",
+    "gulp-rollup": "latest",
+    "gulp-util": "latest",
+    "p5": "latest",
+    "rollup": "latest",
+    "rollup-plugin-buble": "latest",
+    "rollup-plugin-node-resolve": "latest",
+    "three": "latest"
   }
 }
