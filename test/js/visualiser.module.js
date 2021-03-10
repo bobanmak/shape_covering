@@ -1,7 +1,5 @@
   const visualiser = function( room, center ){
-    this.points = room;
-    this.center = center;
-    console.log(this);
+
   };
 
   Object.assign( visualiser.prototype, {
@@ -43,6 +41,8 @@
           s.visualisePoints( s.center );
           s.visualiseTestLines( s.points );
 
+          if ( s.rects ) s.visualiseRectangles( s.rects, s.points );
+
       }
 
       s.visualisePoints = ( points ) => {
@@ -66,9 +66,13 @@
         });
       }
 
-      s.visualiseLines = ( points ) => {
-        s.stroke('purple'); // Change the color
-        s.strokeWeight(5); // Make the points 10 pixels in size
+      s.visualiseLines = ( points, opts ) => {
+        
+        let color = opts && opts.color ? opts.color : 'purple'; 
+        let strokeWeight = opts && opts.strokeWeight ? opts.strokeWeight : 5; 
+
+        s.stroke( color ); // Change the color
+        s.strokeWeight(strokeWeight); // Make the points 10 pixels in size
     
         points.forEach( ( edge , index ) =>{
                 
@@ -82,6 +86,22 @@
           
         });
       }
+
+      s.visualiseRectangles = ( rects, room ) => {
+        let visuelList = [];
+        rects.forEach( ( rect  ) =>{
+
+            for ( let i = 0; i < rect.length ; i ++ ){
+              visuelList.push( room[ rect[i] ] );
+            }
+
+
+        });
+
+        s.visualiseLines( visuelList, { color:'red', strokeWeight:2 })
+
+      }
+
 
       s.mousePressed = function(){
         s.draw_allowed = true;
