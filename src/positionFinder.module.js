@@ -248,27 +248,27 @@ const positionFinder = {
         
         for ( let i = 0; i < stepX; i++ ){
         
-        lPos.x = 0 + i*gridX;
-        
-        for( let j = 0; j < stepY; j++ ){
-        
-         totalDist = 0;
-         totalDist2 = 0;
-         lPos.y = 0 + j*gridY;
-        
-         for( let z = 0; z < room.length ; z++ ){
-        
-            dist = this.maths.distanceTo( lPos, room[z] );
-            totalDist += dist;
-                          
-            if ( z === room.length - 1 ){
-                dist2 = this.maths.closestToSegment( lPos, room[z], room[0] );
-            } else {
-                dist2 = this.maths.closestToSegment( lPos, room[z], room[z+1] );
-            }
-            if ( dist2 < 150 ) dist2 = 1000;
-            totalDist2 += dist2;
-        
+            lPos.x = 0 + i*gridX;
+            
+            for( let j = 0; j < stepY; j++ ){
+            
+                totalDist = 0;
+                totalDist2 = 0;
+                lPos.y = 0 + j*gridY;
+            
+            for( let z = 0; z < room.length ; z++ ){
+            
+                dist = this.maths.distanceTo( lPos, room[z] );
+                totalDist += dist;
+                            
+                if ( z === room.length - 1 ){
+                    dist2 = this.maths.closestToSegment( lPos, room[z], room[0] );
+                } else {
+                    dist2 = this.maths.closestToSegment( lPos, room[z], room[z+1] );
+                }
+                if ( dist2 < 150 ) dist2 = 1000;
+                totalDist2 += dist2;
+            
          }
         
         
@@ -371,11 +371,14 @@ const positionFinder = {
         
         for ( let i = 0; i < stepX; i++ ){
         
-        lPos.x = 0 + i*gridX;
+        lPos.x = measures.xMin + i*gridX;
         
             for( let j = 0; j < stepY; j++ ){
                 smallestSide = 10000;
-                lPos.y = 0 + j*gridY;
+                lPos.y = measures.yMin + j*gridY;
+                inside = this.maths.inside( lPos, room ); 
+
+                if ( !inside ) continue;
                 
                 for( let z = 0; z < room.length ; z++ ){
                     
@@ -390,11 +393,8 @@ const positionFinder = {
                     }
                 
                 }
-
-                inside = this.maths.inside( lPos, room ); 
-
                 
-                if ( smallestSide > 5 && inside ){
+                if ( smallestSide > 40 ){
                     circles.push( { position: { x:lPos.x, y:lPos.y }, radius: smallestSide})
 
                 }
@@ -403,7 +403,8 @@ const positionFinder = {
             }
         }
 
-        return this.find2circles( circles,measures );
+        // return circles;
+        return this.find2circles( circles, measures );
     },
 
     find2circles: function( circles, measures ){

@@ -106,6 +106,7 @@
       s.visualiseCircles = ( list ) => {
         s.stroke('grey'); // Change the color
         s.strokeWeight(2); // Make the points 10 pixels in size
+        //s.noFill();
         list.forEach( ( c ) =>{
           s.circle( c.position.x, c.position.y, c.radius*2 );
   

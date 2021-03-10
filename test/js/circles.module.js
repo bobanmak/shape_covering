@@ -14,7 +14,7 @@ let myp5 = new p5( v.sketch, window.document.getElementById('sketch') );
 
 
 myp5.points = room;
-myp5.center = positionFinder.minimumDistPointEdges( room );
+
 myp5.circles = positionFinder.fillCircles( room );
 
 console.log("circles ", myp5.circles);
@@ -23,7 +23,6 @@ console.log("circles ", myp5.circles);
 myp5.mouseReleased = function(){
     myp5.draw_allowed = false;
 
-    myp5.center = positionFinder.minimumDistPointEdges( room );
     myp5.circles = positionFinder.fillCircles( room );
 
     myp5.points.forEach( ( edge , index ) =>{
