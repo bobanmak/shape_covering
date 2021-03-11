@@ -7,12 +7,12 @@ const defaults = {
         x: 10,
         y: 10
     },
-    allowedLights: 3,
+    allowedLights: 6,
     minRadius: 40,
-    onlyInside: true,
+    showOutside: true,
     checkConstraints: false,
     showAll: false,
-    lightRoomRatio: 0.7
+    lightRoomRatio: 0.9
 };
 
 const positionFinder = function( opts ){
@@ -119,9 +119,11 @@ positionFinder.prototype = Object.assign({
             for( let j = 0; j < stepY; j++ ){
                 smallestSide = 10000;
                 lPos.y = measures.yMin + j*opts.grid.y;
-                inside = this.maths.inside( lPos, room ); 
-
-                if ( opts.onlyInside && !inside ) continue;
+                
+                if ( !opts.showOutside ){
+                    inside = this.maths.inside( lPos, room ); 
+                    if ( !inside ) continue;
+                }
                 
                 // check room
                 for( let z = 0; z < room.length ; z++ ){
@@ -174,7 +176,7 @@ positionFinder.prototype = Object.assign({
         let roomDiagonale = Math.sqrt( measures.width*measures.width + measures.height*measures.height );
         let radiusSam = lights.map( item => item.radius ).reduce((prev, next) => prev + next);
 
-        let ratio =  radiusSam*2 / roomDiagonale ;
+        let ratio =  radiusSam*2 / roomDiagonale ; // maybe something better?
         // console.log("lights ratio: ", ratio );
         return ratio;
     },
@@ -201,8 +203,6 @@ positionFinder.prototype = Object.assign({
 
             if ( lightRatio >= opts.lightRoomRatio || candidates.length ===  opts.allowedLights ) break;
 
-            
-
             if ( this.checkDistanceToAll( candidates, lights[i] ) ) candidates.push( lights[i]);
 
         }
@@ -221,35 +221,6 @@ positionFinder.prototype = Object.assign({
             if ( dist < candidates[j].radius + light.radius ) return false;
         }
         return  true;
-    },
-
-
-    // depricated
-    findCandidatesOld: function( circles, measures ){
-        this.findCandidates2( circles, measures );
-        let list = [];
-
-        let roomDiagonale = Math.sqrt( measures.width*measures.width + measures.height*measures.height );
-        circles.sort((a, b) => parseFloat(b.radius) - parseFloat(a.radius));
-        let dist = 0;
-        let biggest = circles[ 0 ];
-        list.push( biggest );
-
-        if ( roomDiagonale/1.5 > biggest.radius*2 ){
-            for( let i = 1; i< circles.length; i++ ){
-                dist = this.maths.distanceTo( biggest.position, circles[i].position );
-    
-                if ( dist >= biggest.radius + circles[i].radius ){
-                    list.push( circles[i] );
-                    break;
-                }
-            }
-        }
-        this.getLightRatio( measures, list );
-        
-        //console.log("circles: ", list, roomDiagonale, biggest.radius);
-
-        return list;
     } 
 });
 

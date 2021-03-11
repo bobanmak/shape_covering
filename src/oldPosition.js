@@ -255,4 +255,31 @@ minimumDistPointEdges: function( room ){
     }
    // console.log("best Pos: ", bestPosition);
     return bestPosition;
+        // depricated,
+    findCandidatesOld: function( circles, measures ){
+        this.findCandidates2( circles, measures );
+        let list = [];
+
+        let roomDiagonale = Math.sqrt( measures.width*measures.width + measures.height*measures.height );
+        circles.sort((a, b) => parseFloat(b.radius) - parseFloat(a.radius));
+        let dist = 0;
+        let biggest = circles[ 0 ];
+        list.push( biggest );
+
+        if ( roomDiagonale/1.5 > biggest.radius*2 ){
+            for( let i = 1; i< circles.length; i++ ){
+                dist = this.maths.distanceTo( biggest.position, circles[i].position );
+    
+                if ( dist >= biggest.radius + circles[i].radius ){
+                    list.push( circles[i] );
+                    break;
+                }
+            }
+        }
+        this.getLightRatio( measures, list );
+        
+        //console.log("circles: ", list, roomDiagonale, biggest.radius);
+
+        return list;
+    } 
 }
