@@ -1,5 +1,6 @@
 import positionFinder from "../../src/positionFinder.module.js"
 import visualiser from "./visualiser.module.js"
+import debug from "./debug.module.js"
 
 let configuration = {
 
@@ -13,9 +14,9 @@ let configuration = {
 
 };
 let positionHelper = new positionFinder( configuration );
-let visualisation = new visualiser( );
+let visualisation = new visualiser(  );
 
-
+debug.init( positionHelper.options );
 
 
 let room  = [ { x: 100, y: 100 }, { x: 400, y: 100 } , 
