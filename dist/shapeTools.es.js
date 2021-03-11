@@ -1,4 +1,4 @@
-import * as THREE from "../node_modules/three/build/three.module.js";
+import { Vector2 } from '../../three/build/three.module.js';
 
 const positionFinder = {
 
@@ -19,9 +19,9 @@ const positionFinder = {
         },
          // Stupid lack of operator overloading, this looks so dumb
         closestToSegment: function (p, la, lb) {
-            let point = new THREE.Vector2( p.x, p.y );
-            let a     = new THREE.Vector2( la.x, la.y );
-            let b     = new THREE.Vector2( lb.x, lb.y );
+            let point = new Vector2( p.x, p.y );
+            let a     = new Vector2( la.x, la.y );
+            let b     = new Vector2( lb.x, lb.y );
 
             let ba = b.clone().sub(a);
             let t = point.clone().sub(a).dot(ba) / ba.lengthSq();
@@ -32,10 +32,10 @@ const positionFinder = {
 
         intersectionWalls : function ( a1, e1, a2, e2 ) {
   
-            let b1 = new THREE.Vector2().copy(e1);
+            let b1 = new Vector2().copy(e1);
             b1.sub( a1 );
 
-            let b2 = new THREE.Vector2().copy(e2);
+            let b2 = new Vector2().copy(e2);
             b2.sub( a2 );
 
             let s1 = a1.x * b1.y - a1.y * b1.x ;
@@ -43,7 +43,7 @@ const positionFinder = {
             let d  = b2.x * b1.y - b2.y * b1.x ;  // determinant
             let mu = (s1-s2) / d;
 
-            let schnittPunkt = new THREE.Vector2().copy( b2 ).multiplyScalar( mu ).add( a2 );
+            let schnittPunkt = new Vector2().copy( b2 ).multiplyScalar( mu ).add( a2 );
             console.log("schnittPunkt: ", schnittPunkt );
 
             return schnittPunkt;
@@ -63,7 +63,7 @@ const positionFinder = {
                 
                 let intersect = ((yi > y) != (yj > y))
                     && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-                if (intersect) inside = !inside;
+                if (intersect) { inside = !inside; }
             }
             
             return inside;
@@ -86,10 +86,10 @@ const positionFinder = {
     
         let width  = xMax - xMin;
         let height = yMax - yMin;
-        let center = new THREE.Vector2( height/2 + yMin, width/2 + xMin  );
+        let center = new Vector2( height/2 + yMin, width/2 + xMin  );
 
     
-        return { width, height, xMin, xMax, yMin, yMax, center };
+        return { width: width, height: height, xMin: xMin, xMax: xMax, yMin: yMin, yMax: yMax, center: center };
     },
 
     findLightPositions3: function( ecken ){
@@ -108,14 +108,12 @@ const positionFinder = {
         let stepY = height/grid.y;
         let distance;
 
-        let lightPos     = new THREE.Vector2( 0, 0 );
+        let lightPos     = new Vector2( 0, 0 );
 
         
 
         let occupancy = 1;
         let maxOccupancy = 0;
-
-        let positions = [], intenitys = [];
         let results = [];
 
         let findEdges = function( edges, res, callback ){
@@ -142,7 +140,7 @@ const positionFinder = {
                         if ( distance > radius ){ // if edge distance bigger than radius
                             rest.push( index );
                             occupancy =  1 - ( rest.length / edges.length );
-                        } else{
+                        } else {
                             used.push( index );
                         }
                     });
@@ -171,10 +169,9 @@ const positionFinder = {
                 callback( res );
                 return res;
             }
-        }
+        };
 
         let afterwork = function( rects ){
-            let bbox =[];
             rects.forEach( function( indexes ){
                 if ( indexes.length === 1 || indexes.length === 2 ){ // if only two edges take naighbour edge
 
@@ -186,7 +183,7 @@ const positionFinder = {
                     }
                 } 
 
-                let measures = scope.getMeasures( scope.filterArray( ecken, indexes ) );
+                scope.getMeasures( scope.filterArray( ecken, indexes ) );
 
             });
             //console.log("rectse", rects);
@@ -237,10 +234,7 @@ const positionFinder = {
         let stepX = width/gridX;
         let stepY = height/gridY;
         let lPos  = { x: 0, y: 0 };
-        let totalDist = 0;
-        let totalDistMin = 100000;
         let bestPosition = { x: 0, y:0 };
-        let dist;
         let dist2;
 
         let totalDist2 = 0;
@@ -251,22 +245,19 @@ const positionFinder = {
             lPos.x = 0 + i*gridX;
             
             for( let j = 0; j < stepY; j++ ){
-            
-                totalDist = 0;
                 totalDist2 = 0;
                 lPos.y = 0 + j*gridY;
             
             for( let z = 0; z < room.length ; z++ ){
             
-                dist = this.maths.distanceTo( lPos, room[z] );
-                totalDist += dist;
+                this.maths.distanceTo( lPos, room[z] );
                             
                 if ( z === room.length - 1 ){
                     dist2 = this.maths.closestToSegment( lPos, room[z], room[0] );
                 } else {
                     dist2 = this.maths.closestToSegment( lPos, room[z], room[z+1] );
                 }
-                if ( dist2 < 150 ) dist2 = 1000;
+                if ( dist2 < 150 ) { dist2 = 1000; }
                 totalDist2 += dist2;
             
          }
@@ -329,7 +320,7 @@ const positionFinder = {
             inside = this.maths.inside( lPos, room ); 
 
             
-            if ( dist2 < 100 || !inside ) dist += 2000;
+            if ( dist2 < 100 || !inside ) { dist += 2000; }
             
             
             totalDist += dist;
@@ -378,7 +369,7 @@ const positionFinder = {
                 lPos.y = measures.yMin + j*gridY;
                 inside = this.maths.inside( lPos, room ); 
 
-                if ( !inside ) continue;
+                if ( !inside ) { continue; }
                 
                 for( let z = 0; z < room.length ; z++ ){
                     
@@ -395,7 +386,7 @@ const positionFinder = {
                 }
                 
                 if ( smallestSide > 40 ){
-                    circles.push( { position: { x:lPos.x, y:lPos.y }, radius: smallestSide})
+                    circles.push( { position: { x:lPos.x, y:lPos.y }, radius: smallestSide});
 
                 }
                 
@@ -433,6 +424,6 @@ const positionFinder = {
         return list;
     }
 
-}
+};
 
 export default positionFinder;
