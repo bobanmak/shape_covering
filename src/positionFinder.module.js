@@ -194,7 +194,12 @@ positionFinder.prototype = Object.assign({
 
         for( let i = 1; i< lights.length; i++ ){
 
+            if ( opts.allowedLights < 1 ) return;
+
             if ( candidates.length === 0 ){
+                lightRatio = this.getLightRatio( measures, [ lights[i] ] );
+                if ( lightRatio >= opts.lightRoomRatio ) continue;
+
                 candidates.push( lights[i] ); // first and biggest
                 continue;
             } 
