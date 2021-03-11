@@ -14,10 +14,7 @@ let configuration = {
 
 };
 let positionHelper = new positionFinder( configuration );
-let visualisation = new visualiser(  );
-
-debug.init( positionHelper.options );
-
+let visualisation = new visualiser();
 
 let room  = [ { x: 100, y: 100 }, { x: 400, y: 100 } , 
               { x: 400, y: 400 }, { x: 550, y: 400 }, { x: 550, y: 550 },  { x: 100, y: 550 } ];
@@ -28,19 +25,13 @@ let constraints = [ [ {x: 200, y:200 }, { x:300, y:300 } ],
 
 
 let myp5 = new p5( visualisation.sketch, window.document.getElementById('sketch') );
+debug.set( positionHelper.options, myp5 );
 
 myp5.points      = room;
 myp5.constraints = constraints;
 
 myp5.circles = positionHelper.fillCircles( room, constraints );
-/*
-setTimeout( () =>{
-    positionHelper.options.allowedLights = 1;
-    myp5.circles = positionHelper.fillCircles( room, constraints );
 
-    myp5.redraw();
-}, 4000 );
-*/
 /* Interatction */
 myp5.mouseReleased = function(){
 
