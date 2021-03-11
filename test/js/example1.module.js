@@ -14,14 +14,8 @@ let myp5 = new p5( v.sketch, window.document.getElementById('sketch') );
 
 
 myp5.points = room;
-myp5.center = positionFinder.minimumDistPointEdges( room );
+//myp5.center = positionFinder.minimumDistPointEdges( room );
 myp5.circles = positionFinder.fillCircles( room );
-
-console.log("circles ", myp5.circles);
-//myp5.rects  = positionFinder.findLightPositions3( room ) ;
-//console.log("mm: ", myp5.rects, myp5.points);
-
-//myp5.center = positionFinder.getCenters( myp5.points, myp5.rects );
 
 
 myp5.mouseReleased = function(){
