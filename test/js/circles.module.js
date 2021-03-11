@@ -2,6 +2,7 @@ import positionFinder from "../../src/positionFinder.module.js"
 import visualiser from "./visualiser.module.js"
 
 let v = new visualiser( );
+let positionHelper = new positionFinder( { test: "test" } );
 
 let constraints = [];
 
@@ -21,14 +22,14 @@ let myp5 = new p5( v.sketch, window.document.getElementById('sketch') );
 myp5.points = room;
 myp5.constraints = constraints;
 
-myp5.circles = positionFinder.fillCircles( room, constraints );
+myp5.circles = positionHelper.fillCircles( room, constraints );
 
 
 /* Interatction */
 myp5.mouseReleased = function(){
 
     myp5.draw_allowed = false;
-    myp5.circles = positionFinder.fillCircles( room, constraints );
+    myp5.circles = positionHelper.fillCircles( room, constraints );
 
     myp5.points.forEach( ( edge , index ) =>{
         myp5[ "drawP_" + index ] = false; 
