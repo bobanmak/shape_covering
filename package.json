@@ -34,10 +34,7 @@
     "p5": "latest",
     "rollup": "^2.41.1",
     "rollup-plugin-buble": "latest",
-    "rollup-plugin-node-resolve": "latest"
-  },
-  "dependencies": {
-    "dat.gui": "^0.7.7",
-    "three": "^0.126.1"
+    "rollup-plugin-node-resolve": "latest",
+    "dat.gui": "^0.7.7"
   }
 }

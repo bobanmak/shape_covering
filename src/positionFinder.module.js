@@ -1,5 +1,3 @@
-import * as THREE from "../node_modules/three/build/three.module.js";
-
 // all units are in cm
 
 const defaults = {
@@ -39,19 +37,47 @@ positionFinder.prototype = Object.assign({
             return dx * dx + dy * dy;
             
         },
-         // Stupid lack of operator overloading, this looks so dumb
-        closestToSegment: function (p, la, lb) {
-            let point = new THREE.Vector2( p.x, p.y );
-            let a     = new THREE.Vector2( la.x, la.y );
-            let b     = new THREE.Vector2( lb.x, lb.y );
 
-            let ba = b.clone().sub(a);
-            let t = point.clone().sub(a).dot(ba) / ba.lengthSq();
-
-            let res = a.clone().lerp(b, Math.min(Math.max(t, 0), 1));
-            return this.distanceTo( res, p);
+        clone: function ( v ) {
+            return { x: v.x, y: v.y }  
         },
 
+        lerp: function ( v1, v2, alpha ) {
+            
+            v1.x += ( v2.x - v1.x ) * alpha ;
+            v1.y += ( v2.y - v1.y ) * alpha ;
+            return v1;
+
+        },
+
+        lengthSq: function (v) {
+            return v.x * v.x + v.y * v.y;
+        },
+
+        dot: function( v1, v2 ){
+            return v1.x * v2.x + v1.y * v2.y;
+        },
+
+        sub: function ( v1, v2 ) {
+            
+            v1.x = v1.x - v2.x ;
+            v1.y = v1.y - v2.y ;
+
+            return v1;
+
+        },
+
+        closestToSegment: function (p, la, lb) {
+            let point = this.clone( p );
+            let a     = this.clone( la );
+            let b     = this.clone( lb );
+
+            let ba = this.sub( this.clone( b ), a );
+            let t = this.dot( this.sub( point, a ), ba ) / this.lengthSq( ba );
+
+            let res = this.lerp( a, b, Math.min(Math.max(t, 0), 1));
+            return this.distanceTo( res, p);
+        },
 
         inside: function(point, vs) {
             // https://stackoverflow.com/questions/22521982/check-if-point-is-inside-a-polygon
@@ -89,7 +115,7 @@ positionFinder.prototype = Object.assign({
     
         let width  = xMax - xMin;
         let height = yMax - yMin;
-        let center = new THREE.Vector2( height/2 + yMin, width/2 + xMin  );
+        let center = { x: height/2 + yMin, y: width/2 + xMin  };
 
     
         return { width, height, xMin, xMax, yMin, yMax, center };
