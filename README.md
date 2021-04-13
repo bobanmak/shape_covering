@@ -1,2 +1,2 @@
 # shape_covering
-Cover any shape with rectangles p5.js 
+Cover any shape with circles p5.js 
